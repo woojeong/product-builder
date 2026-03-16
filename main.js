@@ -25,7 +25,7 @@ class LineDrawingFace extends HTMLElement {
         .face-part {
           fill: transparent;
           stroke: var(--stroke-color, #333);
-          stroke-width: 2;
+          stroke-width: 1.5;
           stroke-linecap: round;
           stroke-linejoin: round;
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -33,52 +33,53 @@ class LineDrawingFace extends HTMLElement {
           vector-effect: non-scaling-stroke;
         }
         .face-part:hover {
+          fill: oklch(0.6 0.15 30 / 0.2);
           stroke: var(--accent-color, #ff5722);
-          stroke-width: 4;
-          filter: drop-shadow(0 0 5px var(--selection-glow));
+          stroke-width: 2.5;
         }
         .face-part.selected {
+          fill: oklch(0.6 0.15 30 / 0.5);
           stroke: var(--accent-color, #ff5722);
-          stroke-width: 6;
-          filter: drop-shadow(0 0 10px var(--selection-glow));
+          stroke-width: 3.5;
+          filter: drop-shadow(0 0 10px oklch(0.6 0.2 30 / 0.3));
         }
         .contour {
           pointer-events: none;
-          stroke-width: 3;
+          stroke-width: 2.5;
+          fill: none;
         }
       </style>
       <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-        <!-- Face Contour -->
-        <path class="face-part contour" d="M100,150 Q100,300 200,350 Q300,300 300,150 Q300,50 200,50 Q100,50 100,150 Z" />
+        <!-- Face Contour (Base) -->
+        <path class="contour" d="M100,150 Q100,300 200,350 Q300,300 300,150 Q300,50 200,50 Q100,50 100,150 Z" />
         
-        <!-- Hair (Simple line) -->
-        <path class="face-part" id="hair" data-name="머리카락" d="M100,150 Q80,100 150,60 Q200,40 250,60 Q320,100 300,150" />
+        <!-- Forehead (이마) -->
+        <path class="face-part" id="forehead" data-name="이마" d="M110,140 Q110,65 200,65 Q290,65 290,140 L200,140 Z" />
 
-        <!-- Left Eye -->
-        <path class="face-part" id="left-eye" data-name="왼쪽 눈" d="M150,180 Q170,170 190,180 Q170,190 150,180 Z" />
-        <circle class="face-part" id="left-pupil" data-name="왼쪽 눈동자" cx="170" cy="180" r="3" />
+        <!-- Eye Area (눈가) - Combined or separate, let's do separate for better UX -->
+        <!-- Left Eye Area -->
+        <path class="face-part" id="left-eye-area" data-name="왼쪽 눈가" d="M130,170 Q130,155 165,155 Q200,155 200,170 Q200,185 165,185 Q130,185 130,170 Z" />
+        <!-- Right Eye Area -->
+        <path class="face-part" id="right-eye-area" data-name="오른쪽 눈가" d="M200,170 Q200,155 235,155 Q270,155 270,170 Q270,185 235,185 Q200,185 200,170 Z" />
 
-        <!-- Right Eye -->
-        <path class="face-part" id="right-eye" data-name="오른쪽 눈" d="M210,180 Q230,170 250,180 Q230,190 210,180 Z" />
-        <circle class="face-part" id="right-pupil" data-name="오른쪽 눈동자" cx="230" cy="180" r="3" />
+        <!-- Eyebrows (눈썹) -->
+        <path class="face-part" id="left-eyebrow" data-name="왼쪽 눈썹" d="M135,160 Q165,145 195,160 Q165,155 135,160 Z" />
+        <path class="face-part" id="right-eyebrow" data-name="오른쪽 눈썹" d="M205,160 Q235,145 265,160 Q235,155 205,160 Z" />
 
-        <!-- Left Eyebrow -->
-        <path class="face-part" id="left-brow" data-name="왼쪽 눈썹" d="M145,165 Q170,155 195,165" />
+        <!-- Cheeks (볼) -->
+        <!-- Left Cheek -->
+        <path class="face-part" id="left-cheek" data-name="왼쪽 볼" d="M110,180 Q105,220 130,250 Q160,280 190,250 Q170,220 170,180 Z" />
+        <!-- Right Cheek -->
+        <path class="face-part" id="right-cheek" data-name="오른쪽 볼" d="M290,180 Q295,220 270,250 Q240,280 210,250 Q230,220 230,180 Z" />
 
-        <!-- Right Eyebrow -->
-        <path class="face-part" id="right-brow" data-name="오른쪽 눈썹" d="M205,165 Q230,155 255,165" />
+        <!-- Lips (입술) -->
+        <path class="face-part" id="lips" data-name="입술" d="M160,285 Q200,315 240,285 Q240,275 200,275 Q160,275 160,285 Z" />
 
-        <!-- Nose -->
-        <path class="face-part" id="nose" data-name="코" d="M200,190 L200,240 Q200,250 190,250" />
-
-        <!-- Mouth -->
-        <path class="face-part" id="mouth" data-name="입" d="M160,280 Q200,310 240,280 Q200,290 160,280 Z" />
-
-        <!-- Left Ear -->
-        <path class="face-part" id="left-ear" data-name="왼쪽 귀" d="M100,170 Q80,170 80,210 Q80,240 100,240" />
-
-        <!-- Right Ear -->
-        <path class="face-part" id="right-ear" data-name="오른쪽 귀" d="M300,170 Q320,170 320,210 Q320,240 300,240" />
+        <!-- Chin (턱) -->
+        <path class="face-part" id="chin" data-name="턱" d="M150,300 Q200,345 250,300 Q250,340 200,350 Q150,340 150,300 Z" />
+        
+        <!-- Decoration lines (non-interactive) -->
+        <path class="contour" d="M200,190 L200,240 Q200,250 190,250" opacity="0.3" /> <!-- Simple Nose Line -->
       </svg>
     `;
 
