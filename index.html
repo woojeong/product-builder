@@ -1,14 +1,29 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
-  <link href='/style.css' rel='stylesheet'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Line Drawing - Interactive Experience</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h1>Hello, world!</h1>
-  <button onclick="console.log('hello');">Press me</button>
-  <script defer type="text/javascript" src="/main.js"></script>
+    <header>
+        <h1>Face <span>Line</span> Drawing</h1>
+        <p>얼굴의 부위를 선택하여 탐색해보세요.</p>
+    </header>
+
+    <main>
+        <div class="canvas-container">
+            <line-drawing-face id="interactive-face"></line-drawing-face>
+        </div>
+        <div id="status-panel">
+            <p id="selection-label">부위를 선택해주세요</p>
+        </div>
+    </main>
+
+    <script type="module" src="main.js"></script>
 </body>
 </html>
