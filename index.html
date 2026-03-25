@@ -3,26 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Face Line Drawing - Interactive Experience</title>
+    <title>감각에 집중해! - Sensory Relaxation with Hand Tracking</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- MediaPipe Hands Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <header>
-        <h1>Face <span>Line</span> Drawing</h1>
-        <p>얼굴의 부위를 선택하여 탐색해보세요.</p>
-    </header>
-
+    <div id="webcam-status">Webcam Initializing...</div>
+    
     <main>
-        <div class="canvas-container">
-            <line-drawing-face id="interactive-face"></line-drawing-face>
+        <div class="sensory-center">
+            <h1 class="main-typography">잘 쉬고 싶다면?<br><span>먼저 감각에 집중해!</span></h1>
         </div>
-        <div id="status-panel">
-            <p id="selection-label">부위를 선택해주세요</p>
+        
+        <div class="pentagon-container">
+            <geometric-shape type="circle" color="--shape-1" style="--angle: 0deg;"></geometric-shape>
+            <geometric-shape type="square" color="--shape-2" style="--angle: 72deg;"></geometric-shape>
+            <geometric-shape type="triangle" color="--shape-3" style="--angle: 144deg;"></geometric-shape>
+            <geometric-shape type="hexagon" color="--shape-4" style="--angle: 216deg;"></geometric-shape>
+            <geometric-shape type="star" color="--shape-5" style="--angle: 288deg;"></geometric-shape>
         </div>
+
+        <!-- Hand Marker (Hidden by default, used for feedback) -->
+        <div id="hand-pointer"></div>
     </main>
+
+    <!-- Hidden Video Element for Webcam -->
+    <video id="input-video" class="input_video" style="display:none;"></video>
 
     <script type="module" src="main.js"></script>
 </body>
