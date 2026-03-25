@@ -179,32 +179,47 @@ customElements.define('geometric-shape', GeometricShape);
 // --- Hand Tracking Logic ---
 
 const videoElement = document.getElementById('input-video');
+const canvasElement = document.getElementById('output-canvas');
+const canvasCtx = canvasElement.getContext('2d');
 const statusElement = document.getElementById('webcam-status');
 const handPointer = document.getElementById('hand-pointer');
 const shapes = document.querySelectorAll('geometric-shape');
 
 function onResults(results) {
+  // Ensure canvas matches the visual size
+  if (canvasElement.width !== canvasElement.clientWidth) {
+    canvasElement.width = canvasElement.clientWidth;
+    canvasElement.height = canvasElement.clientHeight;
+  }
+
+  // Reset canvas
+  canvasCtx.save();
+  canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+  
   if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
     statusElement.textContent = "Hand Detected";
     handPointer.style.opacity = "1";
     
-    // We'll use the index finger tip (landmark 8)
-    const landmarks = results.multiHandLandmarks[0];
-    const indexFinger = landmarks[8];
-    
-    // Convert normalized coordinates to pixel coordinates
-    // We flip the x coordinate because the webcam is mirrored
-    const x = (1 - indexFinger.x) * window.innerWidth;
-    const y = indexFinger.y * window.innerHeight;
-    
-    handPointer.style.left = `${x}px`;
-    handPointer.style.top = `${y}px`;
-    
-    checkProximity(x, y);
+    for (const landmarks of results.multiHandLandmarks) {
+      // Draw skeleton on canvas with bright green color
+      drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#00ff00', lineWidth: 4});
+      drawLandmarks(canvasCtx, landmarks, {color: '#00ff00', lineWidth: 2, radius: 4});
+
+      // Use the index finger tip (landmark 8) for interaction
+      const indexFinger = landmarks[8];
+      const x = (1 - indexFinger.x) * window.innerWidth;
+      const y = indexFinger.y * window.innerHeight;
+      
+      handPointer.style.left = `${x}px`;
+      handPointer.style.top = `${y}px`;
+      
+      checkProximity(x, y);
+    }
   } else {
     statusElement.textContent = "No Hand Detected";
     handPointer.style.opacity = "0";
   }
+  canvasCtx.restore();
 }
 
 function checkProximity(x, y) {

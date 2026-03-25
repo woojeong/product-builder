@@ -34,8 +34,12 @@
         <div id="hand-pointer"></div>
     </main>
 
-    <!-- Hidden Video Element for Webcam -->
-    <video id="input-video" class="input_video" style="display:none;"></video>
+    <!-- Webcam Section with Guide -->
+    <div class="webcam-container">
+        <div class="webcam-guide">손을 들고 도형 가까이 이동해보세요.</div>
+        <video id="input-video" class="input_video"></video>
+        <canvas id="output-canvas" class="output_canvas"></canvas>
+    </div>
 
     <script type="module" src="main.js"></script>
 </body>
